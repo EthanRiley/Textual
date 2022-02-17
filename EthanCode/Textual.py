@@ -19,18 +19,14 @@ class textual:
     @staticmethod
     def filter_punct(text):
         text = text.lower()
-        text = text.replace(',', '')
-        text = text.replace(':', '')
-        text = text.replace(';', '')
-        text = text.replace('?', '')
-        text = text.replace('<', '')
-        text = text.replace('>', '')
-        text = text.replace('.', '')
-        text = text.replace('"', '')
-        text = text.replace("'", '')
-        text = text.replace('`', '')
-        text = text.replace('\n', ' ')
-        text = text.replace('-', ' ')
+        punctuation_to_blank = [',', ':', ";", "?", '<', '>', ".", "'", '"', '`']
+        for character in punctuation_to_blank:
+            text = text.replace(character, '')
+
+        punctuation_to_space = ['\n', '-']
+        for character in punctuation_to_space:
+            text = text.replace(character, ' ')
+            
         text = text.split(' ')
         new_list = []
         for i in range(len(text)):
