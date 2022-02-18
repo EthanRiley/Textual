@@ -8,6 +8,7 @@ import random as rnd
 import matplotlib.pyplot as plt
 import json
 from textblob import TextBlob
+from MakeSankey import make_sankey
 
 class textual:
     
@@ -153,14 +154,15 @@ class textual:
         results = {}
         return results
     
-    def load_stop_words(self, stopfile):
+    @staticmethod
+    def load_stop_words(stopfile):
         '''
         Loads stop words file for filtering method
         Code by Ethan
         '''
         f = open(stopfile, encoding='utf8')
         raw = json.load(f)
-        self.stop_words = raw
+        return raw
 
     def load_text(self, filename, label=None, parser=None):
         if parser is None:
@@ -180,7 +182,7 @@ class textual:
             plt.bar(label, nw)
         plt.show
 
-    def make_sankey():
+    def word_count_sankey(self, word_list=None, k=5):
         '''
         Generates Sankey Diagram to show how words link together
         Code by Ethan

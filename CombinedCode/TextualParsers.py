@@ -3,6 +3,7 @@ from collections import Counter
 from Textual import textual
 import PyPDF2 as pdf
 
+
 class_object = textual()
 
 def json_parser(filename):
@@ -17,7 +18,7 @@ def json_parser(filename):
     wc = Counter(words)
     num = len(words)
     f.close()
-    return {'wordcount': wc, 'numwords': num, 'raw': words}
+    return {'wordcount': wc, 'numwords': num, 'raw': words, 'text': filename}
 
 def txt_parser(filename):
     '''
@@ -31,7 +32,7 @@ def txt_parser(filename):
     wc = Counter(words)
     num = len(words)
     f.close()
-    return {'wordcount': wc, 'numwords': num, 'raw': words}
+    return {'wordcount': wc, 'numwords': num, 'raw': words, 'text': filename}
 
 def pdf_parser(filename):
     '''
@@ -51,4 +52,4 @@ def pdf_parser(filename):
     wc = Counter(words)
     num = len(words)
     f.close()
-    return {'wordcount': wc, 'numwords': num, 'raw': words}
+    return {'wordcount': wc, 'numwords': num, 'raw': words, 'text': filename}
