@@ -143,16 +143,20 @@ class textual:
         return (unique_words/word_count)*100
 
     @staticmethod
-    def _default_parser(filename):
+    def default_parser(filename):
         '''
-        results = {
-            'wordcount': Counter('to be or not to be'.split(' ')),
-            'numwords': rnd.randrange(10,50)
-        }
-        Silly parser from class
+        Parsing method for .txt files
+        Code by Ethan
         '''
-        results = {}
-        return results
+        f = open(filename)
+        read_f = f.read()
+        read_f = textual.filter_punct(read_f)
+        words = read_f.split(' ')
+        wc = Counter(words)
+        num = len(words)
+        vocab_size = textual.unique_per_100(words)
+        f.close()
+        return {'wordcount': wc, 'numwords': num, 'raw': words, 'text': filename}
     
     @staticmethod
     def load_stop_words(stopfile):

@@ -20,20 +20,6 @@ def json_parser(filename):
     f.close()
     return {'wordcount': wc, 'numwords': num, 'raw': words, 'text': filename}
 
-def txt_parser(filename):
-    '''
-    Parsing method for .txt files
-    Code by Ethan
-    '''
-    f = open(filename)
-    read_f = f.read()
-    read_f = textual.filter_punct(read_f)
-    words = read_f.split(' ')
-    wc = Counter(words)
-    num = len(words)
-    f.close()
-    return {'wordcount': wc, 'numwords': num, 'raw': words, 'text': filename}
-
 def pdf_parser(filename):
     '''
     Parsing method for PDF files
