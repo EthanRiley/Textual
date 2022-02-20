@@ -20,8 +20,9 @@ def json_parser(filename):
     num = len(words)
     vocab_size = textual.unique_per_100(words)
     sentence_length = textual.find_words_per_sentence(text, words)
+    word_length = textual.find_avg_word_length(words)
     f.close()
-    return {'wordcount': wc, 'numwords': num, 'raw': words, 
+    return {'wordcount': wc, 'numwords': num, 'raw': words, 'word length': word_length, 
             'vocab size': vocab_size, 'sentence length': sentence_length}
 
 def pdf_parser(filename):
@@ -44,8 +45,9 @@ def pdf_parser(filename):
     sentence_length = textual.find_words_per_sentence(text, words)
     wc = Counter(words)
     num = len(words)
+    word_length = textual.find_avg_word_length(words)
     f.close()
-    return {'wordcount': wc, 'numwords': num, 'raw': words, 
+    return {'wordcount': wc, 'numwords': num, 'raw': words, 'word length': word_length, 
             'vocab size': vocab_size, 'sentence length': sentence_length}
 
 def txt_parser(filename):
@@ -57,7 +59,7 @@ def txt_parser(filename):
     num = len(words)
     vocab_size = textual.unique_per_100(words)
     sentence_length = textual.find_words_per_sentence(text, words)
-
+    word_length = textual.find_avg_word_length(words)
     f.close()
-    return {'wordcount': wc, 'numwords': num, 'raw': words, 
+    return {'wordcount': wc, 'numwords': num, 'raw': words, 'word length': word_length, 
             'vocab size': vocab_size, 'sentence length': sentence_length}

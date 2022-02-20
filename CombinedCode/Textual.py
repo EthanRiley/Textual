@@ -146,7 +146,8 @@ class textual:
         num = len(words)
         vocab_size = textual.unique_per_100(words)
         sentence_length = textual.find_words_per_sentence(text, words)
-        return {'wordcount': wc, 'numwords': num, 'raw': words, 
+        word_length = textual.find_avg_word_length(words)
+        return {'wordcount': wc, 'numwords': num, 'raw': words, 'word length': word_length, 
                 'vocab size': vocab_size, 'sentence length': sentence_length}
     
     @staticmethod
@@ -187,6 +188,10 @@ class textual:
 
     @staticmethod
     def combine_txt(txt_list):
+        '''
+        Combines txt files into one large string
+        Code by Ethan
+        '''
         new_text = ''
         for txt in txt_list:
             text_file = open(txt, encoding='utf-8')
