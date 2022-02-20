@@ -130,11 +130,7 @@ class textual:
         Code by Ethan
         '''
         unique_words = len(Counter(words).keys())
-        word_count = 0
-        
-        for i in range(len(words)):
-            word_count += 1
-        
+        word_count = len(words)
         return (unique_words/word_count)*100
 
     @staticmethod
@@ -152,7 +148,8 @@ class textual:
         sentence_length = textual.find_words_per_sentence(read_f, words)
 
         f.close()
-        return {'wordcount': wc, 'numwords': num, 'raw': words, 'text': filename, 'vocab size': vocab_size, 'sentence length': sentence_length}
+        return {'wordcount': wc, 'numwords': num, 'raw': words, 'text': filename, 
+                'vocab size': vocab_size, 'sentence length': sentence_length}
     
     @staticmethod
     def load_stop_words(stopfile):
