@@ -47,3 +47,17 @@ def pdf_parser(filename):
     f.close()
     return {'wordcount': wc, 'numwords': num, 'raw': words, 'text': filename, 
             'vocab size': vocab_size, 'sentence length': sentence_length}
+
+def txt_parser(filename):
+    f = open(filename)
+    text = f.read()
+    prewords = textual.filter_punct(text)
+    words = textual.filter_words(prewords, textual.load_stop_words())
+    wc = Counter(words)
+    num = len(words)
+    vocab_size = textual.unique_per_100(words)
+    sentence_length = textual.find_words_per_sentence(text, words)
+
+    f.close()
+    return {'wordcount': wc, 'numwords': num, 'raw': words, 'text': filename, 
+            'vocab size': vocab_size, 'sentence length': sentence_length}

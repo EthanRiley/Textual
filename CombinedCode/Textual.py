@@ -134,22 +134,18 @@ class textual:
         return (unique_words/word_count)*100
 
     @staticmethod
-    def default_parser(filename):
+    def default_parser(text, text_name='Text'):
         '''
         Parsing method for .txt files
         Code by Ethan
         '''
-        f = open(filename)
-        text = f.read()
         prewords = textual.filter_punct(text)
         words = textual.filter_words(prewords, textual.load_stop_words())
         wc = Counter(words)
         num = len(words)
         vocab_size = textual.unique_per_100(words)
         sentence_length = textual.find_words_per_sentence(text, words)
-
-        f.close()
-        return {'wordcount': wc, 'numwords': num, 'raw': words, 'text': filename, 
+        return {'wordcount': wc, 'numwords': num, 'raw': words, 'text': text_name, 
                 'vocab size': vocab_size, 'sentence length': sentence_length}
     
     @staticmethod
@@ -164,7 +160,7 @@ class textual:
 
     def load_text(self, filename, label=None, parser=None):
         if parser is None:
-            results = textual._default_parser(filename)
+            results = textual.default_parser(filename)
         else:
             results = parser(filename)
 
@@ -186,3 +182,10 @@ class textual:
         Code by Ethan
         '''
         pass
+
+    @staticmethod
+    def combine_txt(text_list):
+        for text in text_list:
+            drake_song = open(song)
+            text = drake_song.read()
+            drake_song.close()
