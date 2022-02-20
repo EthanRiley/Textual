@@ -140,19 +140,20 @@ class textual:
         Code by Ethan
         '''
         f = open(filename)
-        read_f = f.read()
-        words = textual.filter_punct(read_f)
+        text = f.read()
+        prewords = textual.filter_punct(text)
+        words = textual.filter_words(prewords, textual.load_stop_words())
         wc = Counter(words)
         num = len(words)
         vocab_size = textual.unique_per_100(words)
-        sentence_length = textual.find_words_per_sentence(read_f, words)
+        sentence_length = textual.find_words_per_sentence(text, words)
 
         f.close()
         return {'wordcount': wc, 'numwords': num, 'raw': words, 'text': filename, 
                 'vocab size': vocab_size, 'sentence length': sentence_length}
     
     @staticmethod
-    def load_stop_words(stopfile):
+    def load_stop_words(stopfile='stop_words.json'):
         '''
         Loads stop words file for filtering method
         Code by Ethan
