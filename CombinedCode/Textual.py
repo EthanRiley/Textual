@@ -4,6 +4,7 @@ description: Reusable nlp framework
 author: Ethan Gilworth, Rithesh
 '''
 from collections import Counter, defaultdict
+from distutils import text_file
 import random as rnd
 import matplotlib.pyplot as plt
 import json
@@ -134,7 +135,7 @@ class textual:
         return (unique_words/word_count)*100
 
     @staticmethod
-    def default_parser(text, text_name='Text'):
+    def default_parser(text):
         '''
         Parsing method for .txt files
         Code by Ethan
@@ -145,22 +146,23 @@ class textual:
         num = len(words)
         vocab_size = textual.unique_per_100(words)
         sentence_length = textual.find_words_per_sentence(text, words)
-        return {'wordcount': wc, 'numwords': num, 'raw': words, 'text': text_name, 
+        return {'wordcount': wc, 'numwords': num, 'raw': words, 
                 'vocab size': vocab_size, 'sentence length': sentence_length}
     
     @staticmethod
-    def load_stop_words(stopfile='stop_words.json'):
+    def load_stop_words(stopfile='CombinedCode/stop_words.json'):
         '''
         Loads stop words file for filtering method
         Code by Ethan
         '''
         f = open(stopfile, encoding='utf8')
         raw = json.load(f)
+        f.close()
         return raw
 
     def load_text(self, filename, label=None, parser=None):
         if parser is None:
-            results = textual.default_parser(filename)
+            results = textual.default_parser(filename, )
         else:
             results = parser(filename)
 
@@ -184,8 +186,12 @@ class textual:
         pass
 
     @staticmethod
-    def combine_txt(text_list):
-        for text in text_list:
-            drake_song = open(song)
-            text = drake_song.read()
-            drake_song.close()
+    def combine_txt(txt_list):
+        new_text = ''
+        for txt in txt_list:
+            text_file = open(txt, encoding='utf-8')
+            text = text_file.read()
+            new_text = new_text + text
+
+            text_file.close()
+        return new_text

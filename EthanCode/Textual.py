@@ -118,3 +118,10 @@ class textual:
         for label, nw in num_words.items():
             plt.bar(label, nw)
         plt.show
+
+    def word_count_sankey(self, word_list=None, k=5):
+        '''
+        Generates Sankey Diagram to show how words link together
+        Code by Ethan
+        '''
+        pass
