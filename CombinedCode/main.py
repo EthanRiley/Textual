@@ -17,7 +17,8 @@ def main():
     tt.load_text(drake_text, 'Drake')
     tt.load_text(kanye_text, 'Kanye')
     tt.load_text(kendrick_text, 'Kendrick')
-    print(tt.data)
+    new_df = textual.dict_df(tt.data['wordcount'])
+    print(new_df.head())
 
 main()
     

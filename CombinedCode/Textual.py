@@ -11,6 +11,8 @@ import json
 from pyparsing import WordStart
 from textblob import TextBlob
 from MakeSankey import make_sankey
+import pandas as pd
+import PyPDF2 as pdf
 
 class textual:
     
@@ -58,11 +60,11 @@ class textual:
         Code by Ethan and Rithesh
         '''
         text = text.lower()
-        punctuation_to_blank = [',', ':', ";", "?", '<', '>', ".", "'", '"', '`']
+        punctuation_to_blank = [',', ':', ";", "?", '<', '>', ".", "'", '"', '`', '!', '(', ')', '*']
         for character in punctuation_to_blank:
             text = text.replace(character, '')
 
-        punctuation_to_space = ['\n', '-']
+        punctuation_to_space = ['\n', '-', '—']
         for character in punctuation_to_space:
             text = text.replace(character, ' ')
             
@@ -200,3 +202,92 @@ class textual:
 
             text_file.close()
         return new_text
+
+    @staticmethod
+    def json_parser(filename):
+        '''
+        Parsing method for JSON files
+        Code from class
+        '''
+        f = open(filename)
+        raw = json.load(f)
+        text = raw['text']
+        prewords = textual.filter_punct(text)
+        words = textual.filter_words(prewords, textual.load_stop_words())
+        wc = Counter(words)
+        num = len(words)
+        vocab_size = textual.unique_per_100(words)
+        sentence_length = textual.find_words_per_sentence(text, words)
+        word_length = textual.find_avg_word_length(words)
+        f.close()
+        return {'wordcount': wc, 'numwords': num, 'raw': words, 'word length': word_length, 
+                'vocab size': vocab_size, 'sentence length': sentence_length}
+
+    @staticmethod
+    def pdf_parser(filename):
+        '''
+        Parsing method for PDF files
+        Code by Ethan and Rithesh
+        '''
+        f = open(filename, 'rb')
+        pdfObj = pdf.PdfFileReader(f)
+        
+        text = ''
+        for page in range(pdfObj.numPages):
+            new_page = pdfObj.getPage(page)
+            new_text = new_page.extractText()
+            text = text + new_text
+        
+        prewords = textual.filter_punct(text)
+        words = textual.filter_words(prewords, textual.load_stop_words())
+        vocab_size = textual.unique_per_100(words)
+        sentence_length = textual.find_words_per_sentence(text, words)
+        wc = Counter(words)
+        num = len(words)
+        word_length = textual.find_avg_word_length(words)
+        f.close()
+        return {'wordcount': wc, 'numwords': num, 'raw': words, 'word length': word_length, 
+                'vocab size': vocab_size, 'sentence length': sentence_length}
+
+    @staticmethod
+    def txt_parser(filename):
+        f = open(filename)
+        text = f.read()
+        prewords = textual.filter_punct(text)
+        words = textual.filter_words(prewords, textual.load_stop_words())
+        wc = Counter(words)
+        num = len(words)
+        vocab_size = textual.unique_per_100(words)
+        sentence_length = textual.find_words_per_sentence(text, words)
+        word_length = textual.find_avg_word_length(words)
+        f.close()
+        return {'wordcount': wc, 'numwords': num, 'raw': words, 'word length': word_length, 
+                'vocab size': vocab_size, 'sentence length': sentence_length}
+
+    @staticmethod
+    def dict_df(dict):
+        dict_items = dict.items()
+        data_list = list(dict_items)
+
+        df = pd.DataFrame(data_list)
+
+        return df
+
+    @staticmethod
+    def combined_df(list_of_songs):
+        final_df = pd.DataFrame()
+        for song in list_of_songs:
+            if song[-3:] == "txt":
+                song_dict = textual.txt_parser(song)
+                df = textual.dict_df(song_dict)
+                final_df.append(df)
+
+            elif song[-3:] == "pdf":
+                song_dict = textual.pdf_parser(song)
+                df = textual.dict_df(song_dict)
+                final_df.append(df)
+
+            elif song[-3:] == "son":
+                song_dict = textual.json_parser(song)
+                df = textual.dict_df(song_dict)
+                final_df.append(df)
