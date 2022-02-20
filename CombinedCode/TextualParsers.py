@@ -14,7 +14,7 @@ def json_parser(filename):
     f = open(filename)
     raw = json.load(f)
     text = raw['text']
-    words = text.split(" ")
+    words = textual.filter_punct(text)
     wc = Counter(words)
     num = len(words)
     f.close()

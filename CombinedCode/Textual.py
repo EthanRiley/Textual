@@ -7,6 +7,7 @@ from collections import Counter, defaultdict
 import random as rnd
 import matplotlib.pyplot as plt
 import json
+from pyparsing import WordStart
 from textblob import TextBlob
 from MakeSankey import make_sankey
 
@@ -26,14 +27,13 @@ class textual:
         '''
         sum1 = 0
         # output list of sentences from speech 
-        lst_of_sent = speech.split('.')
         
         # calculating avg sentence polarity 
         
-        for sent in lst_of_sent:
+        for sent in speech:
             polar = TextBlob(sent).sentiment.polarity
             sum1 += polar
-        return sum1 / len(lst_of_sent)
+        return sum1 / len(speech)
 
 
     @staticmethod
@@ -43,13 +43,12 @@ class textual:
         Code by Rithesh
         '''
         sum1 = 0
-        lst_of_sent = speech.split('.')
         
         # calculate avg sentence sebjectivity 
-        for sent in lst_of_sent:
+        for sent in speech:
             sub = TextBlob(sent).sentiment.subjectivity
             sum1 += sub
-        return sum1 / len(lst_of_sent)
+        return sum1 / len(speech)
 
     @staticmethod
     def filter_punct(text):
@@ -82,10 +81,9 @@ class textual:
         Code by Ethan
         '''
         character_count = 0
-        word_count = 0
+        word_count = len(words)
         # counts all the characters and letters in the speech
         for word in range(len(words)):
-            word_count += 1
             character_count += len(words[word])
         
         return character_count / word_count
@@ -121,10 +119,7 @@ class textual:
         '''
         # Take unfiltered data and then count the splits on .
         sentence_count = len(unfiltered.split('.'))
-        word_count = 0
-        # Count the words once more
-        for i in range(len(filtered)):
-            word_count += 1
+        word_count = len(filtered)
             
         return word_count / sentence_count
 
@@ -150,13 +145,14 @@ class textual:
         '''
         f = open(filename)
         read_f = f.read()
-        read_f = textual.filter_punct(read_f)
-        words = read_f.split(' ')
+        words = textual.filter_punct(read_f)
         wc = Counter(words)
         num = len(words)
         vocab_size = textual.unique_per_100(words)
+        sentence_length = textual.find_words_per_sentence(read_f, words)
+
         f.close()
-        return {'wordcount': wc, 'numwords': num, 'raw': words, 'text': filename}
+        return {'wordcount': wc, 'numwords': num, 'raw': words, 'text': filename, 'vocab size': vocab_size, 'sentence length': sentence_length}
     
     @staticmethod
     def load_stop_words(stopfile):
