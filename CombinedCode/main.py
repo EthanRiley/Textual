@@ -17,6 +17,7 @@ def main():
     tt.load_text(drake_text, 'Drake')
     tt.load_text(kanye_text, 'Kanye')
     tt.load_text(kendrick_text, 'Kendrick')
+    tt.word_count_sankey(title='Rappers1')
     tt.word_count_sankey(title='RappersWordList', word_list=['yeah', 'no', 'like'])
 
 
