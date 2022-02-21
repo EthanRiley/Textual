@@ -13,6 +13,8 @@ from textblob import TextBlob
 from MakeSankey import make_sankey
 import pandas as pd
 import PyPDF2 as pdf
+import plotly.graph_objects as go
+import plotly.io as pio
 
 class textual:
     
@@ -181,12 +183,14 @@ class textual:
             plt.bar(label, nw)
         plt.show
 
-    def word_count_sankey(self, word_list=None, k=5):
+    def word_count_sankey(self, word_list=None, k=5, title='1'):
         '''
         Generates Sankey Diagram to show how words link together
         Code by Ethan
         '''
-        pass
+        df = textual.word_count_df(self.data['wordcount'], word_list, k)
+        textual.make_sankey(df, 'Source', 'Target', 'Count', filename=title)
+
 
     @staticmethod
     def combine_txt(txt_list):
@@ -272,6 +276,16 @@ class textual:
         df = pd.DataFrame(data_list)
 
         return df
+    
+    @staticmethod
+    def word_count_df(dict, word_list=None, k=5):
+        df = pd.DataFrame()
+        for item in dict.keys():
+            for i in dict[item].most_common(k):
+                new_row = {'Source': item, 'Target': i[0], 'Count': i[1]}
+                df = df.append(new_row, ignore_index=True)
+        return df
+
 
     @staticmethod
     def combined_df(list_of_songs):
@@ -291,3 +305,48 @@ class textual:
                 song_dict = textual.json_parser(song)
                 df = textual.dict_df(song_dict)
                 final_df.append(df)
+
+    @staticmethod
+    def code_mapping(df, src, targ):
+        """ map labels in src and targ columns to integers """
+        labels = list(df[src]) + list(df[targ])
+        #labels = sorted(list(set(labels)))
+        
+        #print(labels)
+        
+        codes = list(range(len(labels)))
+        #print(codes)
+        
+        lcmap = dict(zip(labels, codes))
+        #print(lcmap)
+        
+        df = df.replace({src: lcmap, targ: lcmap})
+        #print(df)
+        
+        return df, labels
+
+    @staticmethod
+    def make_sankey(df, src, targ, vals=None, filename='1', **kwargs):
+        df, labels = textual.code_mapping(df, src, targ)
+        
+        
+        if vals:
+            value = df[vals]
+        else:
+            value = [1] * df.shape[0]
+        
+        
+        link = {'source':df[src], 'target':df[targ], 'value':value}
+        
+        pad =kwargs.get('pad', 100)
+        thickness = kwargs.get('thickness', 10)
+        line_color = kwargs.get('line_color', 'black')
+        width = kwargs.get('width', 2)
+
+        node = {'pad':pad, 'thickness':thickness,
+                'line':{'color':line_color, 'width':width},
+                'label':labels}
+        
+        sk = go.Sankey(link=link, node=node)
+        fig = go.Figure(sk)
+        fig.write_image('sankey_{}.jpg'.format(filename))

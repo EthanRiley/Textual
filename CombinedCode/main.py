@@ -17,8 +17,10 @@ def main():
     tt.load_text(drake_text, 'Drake')
     tt.load_text(kanye_text, 'Kanye')
     tt.load_text(kendrick_text, 'Kendrick')
-    new_df = textual.dict_df(tt.data['wordcount'])
-    print(new_df.head())
+    test_df = textual.word_count_df(tt.data['wordcount'])
+    tt.word_count_sankey(title='Rappers')
+    #new_df = textual.dict_df(tt.data['wordcount'])
+    #print(new_df.head())
 
 main()
     
