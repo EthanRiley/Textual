@@ -32,13 +32,14 @@ class textual:
         '''
         sum1 = 0
         # output list of sentences from speech 
+        lst_of_sent = speech.split('\n')
         
         # calculating avg sentence polarity 
         
-        for sent in speech:
+        for sent in lst_of_sent:
             polar = TextBlob(sent).sentiment.polarity
             sum1 += polar
-        return sum1 / len(speech)
+        return sum1 / len(lst_of_sent)
 
 
     @staticmethod
@@ -48,12 +49,12 @@ class textual:
         Code by Rithesh
         '''
         sum1 = 0
-        
+        lst_of_sent = speech.split('\n') 
         # calculate avg sentence sebjectivity 
-        for sent in speech:
+        for sent in lst_of_sent:
             sub = TextBlob(sent).sentiment.subjectivity
             sum1 += sub
-        return sum1 / len(speech)
+        return sum1 / len(lst_of_sent)
 
     @staticmethod
     def filter_punct(text):
@@ -151,8 +152,10 @@ class textual:
         vocab_size = textual.unique_per_100(words)
         sentence_length = textual.find_words_per_sentence(text, words)
         word_length = textual.find_avg_word_length(words)
+        polarity = textual.avg_polarity(text)
+        subj = textual.avg_subj(text)
         return {'wordcount': wc, 'numwords': num, 'raw': words, 'word length': word_length, 
-                'vocab size': vocab_size, 'sentence length': sentence_length}
+                'polarity': polarity, 'subjectivity': subj, 'vocab size': vocab_size, 'sentence length': sentence_length}
     
     @staticmethod
     def load_stop_words(stopfile='CombinedCode/stop_words.json'):
@@ -223,9 +226,12 @@ class textual:
         vocab_size = textual.unique_per_100(words)
         sentence_length = textual.find_words_per_sentence(text, words)
         word_length = textual.find_avg_word_length(words)
+        polarity = textual.avg_polarity(words)
+        subj = textual.avg_subj(words)
         f.close()
         return {'wordcount': wc, 'numwords': num, 'raw': words, 'word length': word_length, 
-                'vocab size': vocab_size, 'sentence length': sentence_length}
+                'polarity': polarity, 'subjectivity': subj, 'vocab size': vocab_size, 'sentence length': sentence_length}
+
 
     @staticmethod
     def pdf_parser(filename):
@@ -249,9 +255,11 @@ class textual:
         wc = Counter(words)
         num = len(words)
         word_length = textual.find_avg_word_length(words)
+        polarity = textual.avg_polarity(words)
+        subj = textual.avg_subj(words)
         f.close()
         return {'wordcount': wc, 'numwords': num, 'raw': words, 'word length': word_length, 
-                'vocab size': vocab_size, 'sentence length': sentence_length}
+                'polarity': polarity, 'subjectivity': subj, 'vocab size': vocab_size, 'sentence length': sentence_length}
 
     @staticmethod
     def txt_parser(filename):
@@ -264,9 +272,11 @@ class textual:
         vocab_size = textual.unique_per_100(words)
         sentence_length = textual.find_words_per_sentence(text, words)
         word_length = textual.find_avg_word_length(words)
+        polarity = textual.avg_polarity(words)
+        subj = textual.avg_subj(words)
         f.close()
         return {'wordcount': wc, 'numwords': num, 'raw': words, 'word length': word_length, 
-                'vocab size': vocab_size, 'sentence length': sentence_length}
+                'polarity': polarity, 'subjectivity': subj, 'vocab size': vocab_size, 'sentence length': sentence_length}
 
     @staticmethod
     def dict_df(dict):
@@ -275,7 +285,7 @@ class textual:
 
         df = pd.DataFrame(data_list)
 
-        return df
+        return df.T
     
     @staticmethod
     def word_count_df(dict, word_list=None, k=5):
