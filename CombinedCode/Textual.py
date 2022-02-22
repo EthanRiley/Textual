@@ -300,9 +300,17 @@ class textual:
                 new_word_list = list(set(new_word_list))
                 for word in new_word_list:
                     new_row = {'Source':item, 'Target': word, 'Count':dict[item][word]}
-                    df = df.append(new_row, ignore_index=True)       
+                    df = df.append(new_row, ignore_index=True)
+        '''
+        for item in dict.keys():
+            for word in word_list:
+                new_row = {'Source':item, 'Target': word, 'Count':dict[item][word]}
+                df = df.append(new_row, ignore_index=True)
+            for i in dict[item].most_common(k):
+                new_row = {'Source': item, 'Target': i[0], 'Count': i[1]}
+                df = df.append(new_row, ignore_index=True)    
+        '''          
         return df
-
 
     @staticmethod
     def combined_df(list_of_songs):
