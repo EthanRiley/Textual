@@ -32,7 +32,7 @@ def main():
     songs_df['word_length'] = avg_word_length
     songs_df['vocab_size'] = vocab_size
     sns.set()
-    sns.scatterplot(data=songs_df, x='word_length', y='vocab_size', hue='Artists')
+    sns.scatterplot(data=songs_df, x='word_length', y='vocab_size', hue='Artists', s=50)
     plt.savefig('vocab_vs_word.png')
 
 main()
