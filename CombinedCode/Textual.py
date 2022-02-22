@@ -264,7 +264,7 @@ class textual:
 
     @staticmethod
     def txt_parser(filename):
-        f = open(filename)
+        f = open(filename, encoding='utf-8')
         text = f.read()
         prewords = textual.filter_punct(text)
         words = textual.filter_words(prewords, textual.load_stop_words())
@@ -273,8 +273,8 @@ class textual:
         vocab_size = textual.unique_per_100(words)
         sentence_length = textual.find_words_per_sentence(text, words)
         word_length = textual.find_avg_word_length(words)
-        polarity = textual.avg_polarity(words)
-        subj = textual.avg_subj(words)
+        polarity = textual.avg_polarity(text)
+        subj = textual.avg_subj(text)
         f.close()
         return {'wordcount': wc, 'numwords': num, 'raw': words, 'word length': word_length, 
                 'polarity': polarity, 'subjectivity': subj, 'vocab size': vocab_size, 'sentence length': sentence_length}
