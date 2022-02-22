@@ -398,19 +398,20 @@ class textual:
 
         sns.set()
 
-        #fig, axes = plt.subplots(1, 3)
+        fig, axes = plt.subplots(3, 2)
 
         artists = ['Drake', 'Kendrick', 'Kanye']
 
-      #  for idx, artist in enumerate(artists):
-        #    artist_albums = df[df['Album_name'] == artist]
-        #
-        #    sns.boxplot(data=artist_albums, x=x_var, y=y_var, ax=axes[idx])
-
-
-
-        sns_plot = sns.boxplot(data=df.loc[df['Artists'] == 'Drake'], x='Polarity', y='Subjectivity')
-#        sns.boxplot(data=df.loc[df['Artists'] == 'Kanye'], x='Polarity', y='Subjectivity', ax=axes[0,1])
-#       sns.boxplot(data=df.loc[df['Artists'] == 'Kendrick'], x='Polarity', y='Subjectivity', ax=axes[1,0])
-        sns_plot.figure.savefig("output.png")
+        for i in range(len(artists)):
+            artist_name = artists[i]
+            artist_albums = df.loc[df['Album_name'] == artist_name]
         
+            sns.barplot(data=artist_albums, x=x_var, y=y_var, hue='Album_name', ax=axes[i])
+
+
+
+        # sns_plot = sns.boxplot(data=df.loc[df['Artists'] == 'Drake'], x='Polarity', y='Subjectivity')
+        # sns.boxplot(data=df.loc[df['Artists'] == 'Kanye'], x='Polarity', y='Subjectivity', ax=axes[0,1])
+        # sns.boxplot(data=df.loc[df['Artists'] == 'Kendrick'], x='Polarity', y='Subjectivity', ax=axes[1,0])
+        # sns_plot.figure.savefig("output.png")
+
