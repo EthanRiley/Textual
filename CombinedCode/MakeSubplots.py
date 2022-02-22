@@ -22,11 +22,26 @@ def vis_2(dict, var_x, var_y):
     y_idx = dict[var_y]
 
     x_data = df.iloc[x_idx] # --> dict
-    x_data_key = x_data.keys()
+    y_data = df.iloc[y_idx] # --> dict
+    artists = x_data.keys()
     x_data_val = x_data.values()
 
 
-    for idx, artist in enumerate(x_data_key):
+    '''
+    
+    x = series of x_var
+    y = series of y_var
+
+    plt.sub
+    
+    
+    
+    '''
+
+
+
+
+    for idx, artist in enumerate(artists):
         plt.subplot(3, 1, idx + 1)
     
         # Boolean index to get the artist text and info

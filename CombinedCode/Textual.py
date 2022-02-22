@@ -15,6 +15,7 @@ import pandas as pd
 import PyPDF2 as pdf
 import plotly.graph_objects as go
 import plotly.io as pio
+import seaborn as sns
 
 class textual:
     
@@ -351,6 +352,22 @@ class textual:
         return df, labels
 
     @staticmethod
+    def create_df(song_list):
+        final_data = pd.DataFrame()
+
+        for song in song_list:
+            song_name = song.split('/')[2]
+            song_name = song_name.split('.')[0]
+            
+            txt_string = textual.combine_txt(song)
+
+            song_data = textual().load_text(txt_string, song_name)
+
+            final_data = final_data.append(song_data)
+
+        return final_data
+
+    @staticmethod
     def make_sankey(df, src, targ, vals=None, filename='1', **kwargs):
         df, labels = textual.code_mapping(df, src, targ)
         
@@ -375,3 +392,25 @@ class textual:
         sk = go.Sankey(link=link, node=node)
         fig = go.Figure(sk)
         fig.write_image('sankey_{}.jpg'.format(filename))
+
+    @staticmethod
+    def make_boxplots(df, x_var, y_var):
+
+        sns.set()
+
+        #fig, axes = plt.subplots(1, 3)
+
+        artists = ['Drake', 'Kendrick', 'Kanye']
+
+      #  for idx, artist in enumerate(artists):
+        #    artist_albums = df[df['Album_name'] == artist]
+        #
+        #    sns.boxplot(data=artist_albums, x=x_var, y=y_var, ax=axes[idx])
+
+
+
+        sns_plot = sns.boxplot(data=df.loc[df['Artists'] == 'Drake'], x='Polarity', y='Subjectivity')
+#        sns.boxplot(data=df.loc[df['Artists'] == 'Kanye'], x='Polarity', y='Subjectivity', ax=axes[0,1])
+#       sns.boxplot(data=df.loc[df['Artists'] == 'Kendrick'], x='Polarity', y='Subjectivity', ax=axes[1,0])
+        sns_plot.figure.savefig("output.png")
+        
