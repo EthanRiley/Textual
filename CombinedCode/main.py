@@ -17,13 +17,9 @@ def main():
     tt.load_text(drake_text, 'Drake')
     tt.load_text(kanye_text, 'Kanye')
     tt.load_text(kendrick_text, 'Kendrick')
-    #test_df = textual.word_count_df(tt.data['wordcount'])
-    #tt.word_count_sankey(title='Rappers')
-    new_df = textual.dict_df(tt.data)
-    raw_data = tt.data['polarity']
-    print(raw_data)
-    #print(new_df.iloc[5][0])
-    #print(textual.avg_polarity(kendrick_text))
+    tt.word_count_sankey(title='Rappers1')
+    tt.word_count_sankey(title='RappersWordList', word_list=['yeah', 'no', 'like'])
+
 
 main()
     
