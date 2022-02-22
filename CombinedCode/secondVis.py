@@ -39,10 +39,17 @@ def main():
     songs_df['Polarity'] = polarity
     songs_df['Subjectivity'] = subjectivity
 
-    #songs_a = songs_df[songs_df['Song_name'] == 'Kanye']
-    print(songs_df.loc[songs_df['Artists'] == 'Drake'])
+    print(polarity)
+    print(songs_list)
+    print(subjectivity)
 
-    tt.make_boxplots(songs_df, 'Polarity', 'Subjectivity')
+
+    #songs_a = songs_df[songs_df['Song_name'] == 'Kanye']
+    # print(songs_df.loc[songs_df['Artists'] == 'Drake'])
+
+    #tt.make_boxplots(songs_df, 'Artists', 'Polarity')
+
+ #   print(songs_df)
 
 main()
     
